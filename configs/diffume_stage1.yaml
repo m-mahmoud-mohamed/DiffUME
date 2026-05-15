@@ -1,0 +1,38 @@
+# DiffUME Stage 1 — full SFT config (8 × A100, DeepSpeed ZeRO-2, bf16).
+seed: 42
+backbone: /mnt/ceph-hdd/cold/nii00224/hf_home/hub/models--zhibinlan--UME-R1-2B/snapshots/e7aaa253cd315be20bd15c8704ad281b4fdf82c9
+dataset_path: /mnt/ceph-hdd/cold/nii00224/UME_R1/umer1_sft_processed
+output_dir: /mnt/ceph-ssd/workspaces/ws/nii00224/u27702-diffusion-data/diffume-stage1
+
+mixed_precision: bf16
+gradient_checkpointing: true
+
+block_size: 4               # SDAR-VL paper default (block_length: 4)
+max_length: 1536
+per_device_batch_size: 1
+grad_accum: 8               # effective batch = 1*8*8 = 64 pairs
+num_workers: 4
+
+lr: 1.0e-5
+weight_decay: 0.0
+warmup_steps: 500
+max_steps: 30000
+grad_clip: 1.0
+log_every: 25
+save_every: 2000
+
+loss_weights:
+  diff: 1.0
+  disc: 1.0
+  gen: 1.0
+  logit_scale: 50.0
+
+# SDAR-VL P-rectify Beta noise scheduler (μ fixed, C ramps).
+pbnc:
+  scheduler_type: beta        # uniform | beta | clamp
+  target_mean: 0.8            # μ (held fixed across training)
+  start_C: 2.0                # C at step 0 (broad Beta ≈ uniform)
+  end_C: 50.0                 # C at warmup_steps (peaked Beta around μ)
+  warmup_steps: 8090          # SDAR-VL stage-1 default
+  noise_min: 0.0              # only used when scheduler_type == clamp
+  noise_max: 1.0

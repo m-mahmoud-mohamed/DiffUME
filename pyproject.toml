@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "diffume"
+version = "0.0.1"
+description = "Reasoning-Driven Block-wise Diffusion Multimodal Embeddings (SDAR-VL recipe on Qwen2.5-VL)"
+requires-python = ">=3.10"
+dependencies = [
+  "torch>=2.1",
+  "transformers>=4.49.0",
+  "accelerate>=0.34",
+  "deepspeed>=0.14",
+  "datasets>=2.20",
+  "Pillow",
+  "numpy",
+  "pyyaml",
+  "wandb",
+  "qwen-vl-utils",
+]
+
+[tool.setuptools.packages.find]
+include = ["diffume*"]

@@ -1,0 +1,24 @@
+# DiffUME environment requirements
+# Install with: pip install -r requirements-diffume.txt
+# Requires: conda create -n diffume-env python=3.11
+
+# Core deep learning
+torch>=2.1
+torchvision
+
+# HuggingFace stack — Qwen2_5_VLForConditionalGeneration requires >=4.49.0
+transformers>=4.49.0
+accelerate>=0.34
+datasets>=2.20
+
+# Qwen2.5-VL vision utilities
+qwen-vl-utils
+
+# DeepSpeed (optional for 8-GPU ZeRO-2; comment out if not needed for smoke test)
+deepspeed>=0.14
+
+# Misc
+Pillow
+numpy
+pyyaml
+wandb
