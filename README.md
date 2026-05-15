@@ -17,7 +17,7 @@ It applies the SDAR-VL recipe — **BD³ + ABNS + EMRS + PBNC** — directly on 
 3. **Dual readout heads** — two special tokens appended to every sequence produce:
    - `z_disc` — L2-normalised discrete/retrieval embedding (contrastive loss)
    - `z_gen`  — L2-normalised generative embedding
-4. **No backbone surgery** — the Qwen2-VL weights are used as-is; only the attention mask and position IDs are overridden per forward pass.
+4. **Full backbone fine-tuning** — all 2.2 B Qwen2-VL parameters are trained end-to-end through the diffusion objective (FSDP full-shard, bf16). No new layers are inserted inside the transformer; diffusion control is applied externally via the 4D attention mask and position IDs, keeping the architecture clean and the HuggingFace implementation unmodified.
 
 ---
 
